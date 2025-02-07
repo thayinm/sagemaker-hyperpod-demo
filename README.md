@@ -50,3 +50,11 @@ aws sagemaker create-cluster --cli-input-json file://cluster-config.json
 chmod +x easy-ssh.sh
 ./easy-ssh.sh ml-cluster
 ```
+
+## Clean up
+To clean up our resources we must first delete the cluster (wait for it to by deleted completely) and then we can bring down the Terraform stack
+
+```shell
+aws sagemaker delete-cluster --cluster-name ml-cluster
+cd Terraform && terraform destroy
+```
