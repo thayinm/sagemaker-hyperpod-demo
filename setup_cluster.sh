@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
-set -eu -o pipefail
-
-# Check if jq is installed.
-if ! command -v jq 2>&1 >/dev/null
-then
-    echo "jq could not be found, please install jq"
-    exit 1
-fi
+set -eu
 
 APPREMOTEWRITEURL=$(aws ssm get-parameter --name /Terraform/Prometheus/WriteEndpoint --query Parameter.Value)
 TERRAFORMVPCSUBNET=$(aws ssm get-parameter --name /Terraform/VPC/PrivateSubnet --query Parameter.Value)
