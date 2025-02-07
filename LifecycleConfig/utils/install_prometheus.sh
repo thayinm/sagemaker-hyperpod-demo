@@ -5,8 +5,8 @@ echo "Retrieving IMDSv2 Token to fetch region of current EC2 Instance (Head Node
 TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" -s)
 REGION=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s http://169.254.169.254/latest/meta-data/placement/region)
 
-# Retrieve AMPRemoteWriteURL from ParameterStore
-echo "Retrieving AMPRemoteWriteURL from Output Tab of CloudFormation Stack"
+# Retrieve AMPRemoteWriteURL from Parameter Store
+echo "Retrieving AMPRemoteWriteURL from Parameter Store /Terraform/Prometheus/WriteEndpoint"
 AMPREMOTEWRITEURL=$(aws ssm get-parameter --region $REGION --name /Terraform/Prometheus/WriteEndpoint --query Parameter.Value --output text)
 
 
