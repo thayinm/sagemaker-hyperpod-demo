@@ -12,7 +12,7 @@ APPREMOTEWRITEURL=$(aws ssm get-parameter --name /Terraform/Prometheus/WriteEndp
 TERRAFORMVPCSUBNET=$(aws ssm get-parameter --name /Terraform/VPC/PrivateSubnet --query Parameter.Value)
 TERRAFORMSECURITYGROUP=$(aws ssm get-parameter --name /Terraform/VPC/SecurityGroup --query Parameter.Value)
 TERRAFORMIAMROLE=$(aws ssm get-parameter --name /Terraform/IAM/HyperPodRole --query Parameter.Value)
-TERRAFORMS3BUCKET="s3://$(aws ssm get-parameter --name /Terraform/S3/HyperPodBucket | jq -r .Parameter.Value)/lifecycle-config/"
+TERRAFORMS3BUCKET="s3://$(aws ssm get-parameter --name /Terraform/S3/HyperPodBucket --query Parameter.Value --output text)/lifecycle-config/"
 TERRAFORMFSXDNSNAME=$(aws ssm get-parameter --name /Terraform/FSx/HyperPodLustreDNSName --query Parameter.Value)
 TERRAFORMFSXMOUNTNAME=$(aws ssm get-parameter --name /Terraform/FSx/HyperPodLustreMountName --query Parameter.Value)
 echo "Value for APPREMOTEWRITEURL:  ${APPREMOTEWRITEURL}"
