@@ -1,4 +1,4 @@
-# sagemaker-hyperpod-demo
+# SageMaker HyperPod Demo
 
 This repository is designed to serve as a guide on how to get started with running & maintaining your own SageMaker HyperPod Cluster. Terraform is used to quickly and easily setup all the infrastructure we may want/need for our HyperPod Cluster:
 
@@ -37,3 +37,16 @@ terraform apply -auto-approve
 
 Now we can go back to our root folder and create 2 files that are necessary for spinning up a cluster. The first being a [provisioning_parameters.json](https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-hyperpod-lifecycle-best-practices-slurm-base-config.html) file that is going to be used by each of our nodes when running the `on_create.sh` Lifecycle Script and the second being an `input-cli-json` file which we will use as input for the AWS CLI command to finally start cluster creation.
 
+```shell
+cd ..
+chmod +x setup_cluster.sh
+./setup_cluster.sh
+```
+
+Once we have generated both files we can now create the cluster. We will need to wait until the cluster has completed its setup (approx. 10 mins) before using `easy-ssh.sh` to ssh into our cluster.
+
+```shell
+aws sagemaker create-cluster --cli-input-json file://cluster-config.json
+chmod +x easy-ssh.sh
+./easy-ssh.sh ml-cluster
+```
