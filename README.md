@@ -11,14 +11,14 @@ This repository is designed to serve as a guide on how to get started with runni
 ### Prerequisites
 We need to ensure that the following packages/programs are installed before getting started:
 - [jq](https://jqlang.org/download/)
-- [terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
-- [awscli v2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+- [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+- [AWS CLI V2](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
 ### Installation
 First clone this repo and navigate to Terraform
 
 ```shell
-git clone https://github.com/thayinm/sagemaker-hyperpod-demo.git && cd sagemaker-hyperpod-demo
+git clone https://github.com/thayinm/sagemaker-hyperpod-demo.git && cd sagemaker-hyperpod-demo/Terraform
 ```
 
 Next initialise Terraform and its modules then deploy. Make sure you have sufficient IAM permissions to create these resources, Terraform will utilise your credentials similar to how the AWS CLI does this to provision its resources.
@@ -27,3 +27,5 @@ Next initialise Terraform and its modules then deploy. Make sure you have suffic
 terraform init && terraform plan
 terraform apply -auto-approve
 ```
+
+Now we can go back to our root folder and create 2 files that are necessary for spinning up a cluster. The first being a [provisioning_parameters.json](https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-hyperpod-lifecycle-best-practices-slurm-base-config.html) file that is going to be used by each of our nodes when running the `on_create.sh` Lifecycle Script and the second being an `input-cli-json` file which we will use as input for the AWS CLI command to finally start cluster creation.
