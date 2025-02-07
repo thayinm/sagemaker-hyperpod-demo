@@ -7,7 +7,7 @@ REGION=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s http://169.254.169.254/la
 
 # Retrieve AMPRemoteWriteURL from ParameterStore
 echo "Retrieving AMPRemoteWriteURL from Output Tab of CloudFormation Stack"
-AMPREMOTEWRITEURL=$(aws ssm get-parameter --name /Terraform/Prometheus/WriteEndpoint --query Parameter.Value)
+AMPREMOTEWRITEURL=$(aws ssm get-parameter --region $REGION --name /Terraform/Prometheus/WriteEndpoint --query Parameter.Value --output text)
 
 
 # Check if CFNREGION is empty
