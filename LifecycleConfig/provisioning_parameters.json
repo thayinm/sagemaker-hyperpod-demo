@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "workload_manager": "slurm",
+  "controller_group": "controller-machine",
+  "login_group": "my-login-group",
+  "worker_groups": [
+    {
+      "instance_group_name": "compute-nodes",
+      "partition_name": "dev"
+    }
+  ],
+"fsx_dns_name": "fs-02fe6e74c96c5e527.fsx.us-east-1.amazonaws.com",
+"fsx_mountname": "g4ratb4v"
+}

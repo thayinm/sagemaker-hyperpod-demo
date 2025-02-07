@@ -35,3 +35,10 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Ignore .ipynb files
+*.ipynb
+**/.ipynb_checkpoints/*
+
+# Ignore cluster-config files
+cluster-config.json*
