@@ -64,7 +64,8 @@ resource "aws_iam_role_policy" "hyperpod_vpc_policy" {
           "ec2:DescribeDhcpOptions",
           "ec2:DescribeSubnets",
           "ec2:DescribeSecurityGroups",
-          "ec2:DetachNetworkInterface"
+          "ec2:DetachNetworkInterface",
+          "ssm:GetParameter"
         ],
         Resource = "*"
       },
