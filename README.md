@@ -9,6 +9,8 @@ This repository is designed to serve as a guide on how to get started with runni
 - Amazon Prometheus to enable observability of our cluster.
 - Usage of SSM Parameter Store that will allow us to retrive key information about our infrastructure for use in both the lifecycle script and our AWS CLI command that will spin up the cluster (since this is not available in Terraform as of now.)
 
+Based on the [awsome-distributed-training](https://github.com/aws-samples/awsome-distributed-training) repository provided by AWS.
+
 ## Getting Started
 
 ### Prerequisites
