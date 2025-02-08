@@ -29,7 +29,7 @@ cat << EOF > cluster-config.json
         "InstanceType": "ml.m5.2xlarge",
         "InstanceCount": 1,
         "LifeCycleConfig": {
-          "SourceS3Uri": ${TERRAFORMS3BUCKET},
+          "SourceS3Uri": "${TERRAFORMS3BUCKET}",
           "OnCreate": "on_create.sh"
         },
         "ExecutionRole": ${TERRAFORMIAMROLE},
@@ -40,7 +40,7 @@ cat << EOF > cluster-config.json
         "InstanceType": "ml.g5.2xlarge",
         "InstanceCount": 2,
         "LifeCycleConfig": {
-          "SourceS3Uri": ${TERRAFORMS3BUCKET},
+          "SourceS3Uri": "${TERRAFORMS3BUCKET}",
           "OnCreate": "on_create.sh"
         },
         "ExecutionRole": ${TERRAFORMIAMROLE},

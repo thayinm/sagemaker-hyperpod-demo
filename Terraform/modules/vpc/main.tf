@@ -1,6 +1,7 @@
 # VPC Infrastructure
 resource "aws_vpc" "tf-sagemaker-vpc" {
   cidr_block = "10.0.0.0/16"
+  enable_dns_hostnames = true
 
   tags = {
     Name        = "terraform-VPC",
@@ -101,32 +102,32 @@ resource "aws_security_group" "sg" {
 
   # Inbound rule
   ingress {
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
     self      = true
   }
 
-  ingress {
-    from_port = 443
-    to_port   = 443
-    protocol  = "tcp"
-    self      = true
-  }
+  # ingress {
+  #   from_port = 443
+  #   to_port   = 443
+  #   protocol  = "tcp"
+  #   self      = true
+  # }
 
-  ingress {
-    from_port = 8192
-    to_port   = 65535
-    protocol  = "tcp"
-    self      = true
-  }
+  # ingress {
+  #   from_port = 8192
+  #   to_port   = 65535
+  #   protocol  = "tcp"
+  #   self      = true
+  # }
 
-  ingress {
-    from_port = 2049
-    to_port   = 2049
-    protocol  = "tcp"
-    self      = true
-  }
+  # ingress {
+  #   from_port = 2049
+  #   to_port   = 2049
+  #   protocol  = "tcp"
+  #   self      = true
+  # }
 
   # Outbound rule
   egress {

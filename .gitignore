@@ -43,3 +43,4 @@ terraform.rc
 
 # Ignore cluster-config files
 cluster-config.json*
+provisioning_parameters.json

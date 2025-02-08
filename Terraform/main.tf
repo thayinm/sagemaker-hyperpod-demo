@@ -32,6 +32,7 @@ module "s3_hyperpod_bucket" {
 module "fsx_lustre" {
   source         = "./modules/fsx"
   private_subnet = module.sagemaker_vpc.private_subnet_ids[0]
+  security_group_ids = module.sagemaker_vpc.security_group_id
 }
 
 module "parameter_store" {
