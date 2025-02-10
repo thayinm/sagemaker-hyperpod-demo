@@ -53,6 +53,12 @@ chmod +x easy-ssh.sh
 ./easy-ssh.sh ml-cluster
 ```
 
+Now that we have access to our head node in the cluster we can switch from the root user to the ubuntu user and get started with some training.
+
+```shell
+sudo su ubuntu
+```
+
 ## Clean Up
 To clean up our resources we must first delete the cluster (wait for it to be deleted completely) and then we can bring down the Terraform stack
 
