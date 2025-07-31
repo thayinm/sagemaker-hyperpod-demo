@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.70"
     }
+    http = {
+      source  = "hashicorp/http"
+      version = "3.5.0"
+    }
   }
 
   required_version = ">= 1.2.0"
@@ -30,8 +34,8 @@ module "s3_hyperpod_bucket" {
 }
 
 module "fsx_lustre" {
-  source         = "./modules/fsx"
-  private_subnet = module.sagemaker_vpc.private_subnet_ids[0]
+  source             = "./modules/fsx"
+  private_subnet     = module.sagemaker_vpc.private_subnet_ids[0]
   security_group_ids = module.sagemaker_vpc.security_group_id
 }
 
@@ -46,3 +50,10 @@ module "parameter_store" {
   hyperpod_fsx_dns_name   = module.fsx_lustre.fsx_dns_name
 }
 
+module "grafana" {
+  source      = "./modules/ec2"
+  subnet_id   = module.sagemaker_vpc.public_subnet_ids[0]
+  vpc_id      = module.sagemaker_vpc.vpc_id
+  key_name    = null #"docker-sandbox"
+  iam_profile = module.sagemaker_role.grafana_instance_profile
+}

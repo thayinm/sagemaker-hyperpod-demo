@@ -60,6 +60,7 @@ class ProvisioningParameters:
     WORKLOAD_MANAGER_KEY: str = "workload_manager"
     FSX_DNS_NAME: str = "fsx_dns_name"
     FSX_MOUNT_NAME: str = "fsx_mountname"
+    FSX_OPENZFS_DNS_NAME: str = "fsx_openzfs_dns_name"
     SLURM_CONFIGURATIONS: str = "slurm_configurations"
 
     def __init__(self, path: str):
@@ -73,6 +74,10 @@ class ProvisioningParameters:
     @property
     def fsx_settings(self) -> Tuple[str, str]:
         return self._params.get(ProvisioningParameters.FSX_DNS_NAME), self._params.get(ProvisioningParameters.FSX_MOUNT_NAME)
+
+    @property
+    def fsx_openzfs_settings(self) -> Optional[str]:
+        return self._params.get(ProvisioningParameters.FSX_OPENZFS_DNS_NAME)
 
     @property
     def controller_group(self) -> Optional[str]:
@@ -91,15 +96,29 @@ class ProvisioningParameters:
         return slurm_configurations
 
 def get_ip_address():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        # doesn't even have to be reachable
-        s.connect(('10.254.254.254', 1))
-        IP = s.getsockname()[0]
-    except Exception:
-        IP = '127.0.0.1'
-    finally:
-        s.close()
+    max_retries = 7
+    retry_delay_seconds = 5
+    IP = '127.0.0.1'
+
+    retry_count = 0
+    while retry_count < max_retries:
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            # doesn't even have to be reachable
+            s.connect(('10.254.254.254', 1))
+            IP = s.getsockname()[0]
+            break
+        except Exception as e:
+            print(f"Failed to get IP address of the current host. Reason: {repr(e)}.")
+            retry_count += 1
+            if retry_count < max_retries:
+                print(f"Retrying in {retry_delay_seconds} seconds...")
+                time.sleep(retry_delay_seconds)
+                retry_delay_seconds = retry_delay_seconds * 2  # Exponential backoff
+            else:    
+                print(f"Exceeded maximum retries ({max_retries}) to get IP address. Returning default IP address {IP}.")
+        finally:
+            s.close()
     return IP
 
 
@@ -155,10 +174,18 @@ def main(args):
     params = ProvisioningParameters(args.provisioning_parameters)
     resource_config = ResourceConfig(args.resource_config)
 
+    ExecuteBashScript("./utils/install_ansible.sh").run()
+
     fsx_dns_name, fsx_mountname = params.fsx_settings
     if fsx_dns_name and fsx_mountname:
         print(f"Mount fsx: {fsx_dns_name}. Mount point: {fsx_mountname}")
         ExecuteBashScript("./mount_fsx.sh").run(fsx_dns_name, fsx_mountname, "/fsx")
+
+    # Add FSx OpenZFS mount section
+    fsx_openzfs_dns_name = params.fsx_openzfs_settings
+    if Config.enable_fsx_openzfs and fsx_openzfs_dns_name:
+        print(f"Mount FSx OpenZFS: {fsx_openzfs_dns_name}. Mount point: /home")
+        ExecuteBashScript("./mount_fsx_openzfs.sh").run(fsx_openzfs_dns_name, "/home")
 
     ExecuteBashScript("./add_users.sh").run()
 
@@ -192,7 +219,14 @@ def main(args):
 
         ExecuteBashScript("./apply_hotfix.sh").run(node_type)
         ExecuteBashScript("./utils/motd.sh").run(node_type, ",".join(head_node_ip), ",".join(login_node_ip))
-        ExecuteBashScript("./utils/fsx_ubuntu.sh").run()
+
+        # Only configure home directory on FSx if either FSx Lustre or FSx OpenZFS is configured and provided in the provisioning params
+        if (fsx_dns_name and fsx_mountname) or (Config.enable_fsx_openzfs and fsx_openzfs_dns_name):
+            if Config.enable_fsx_openzfs and fsx_openzfs_dns_name:
+                ExecuteBashScript("./utils/fsx_ubuntu.sh").run("1")
+            else:
+                ExecuteBashScript("./utils/fsx_ubuntu.sh").run("0")
+
         ExecuteBashScript("./start_slurm.sh").run(node_type, ",".join(controllers))
         ExecuteBashScript("./utils/gen-keypair-ubuntu.sh").run()
         ExecuteBashScript("./utils/ssh-to-compute.sh").run()

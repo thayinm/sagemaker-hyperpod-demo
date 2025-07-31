@@ -1,4 +1,3 @@
-
 # Basic configuration parameters
 class Config:
 
@@ -24,15 +23,20 @@ class Config:
     # You need to configure parameters in SssdConfig as well.
     enable_sssd = False
 
-    # Set true if you want to use mountpoint for s3 on cluster nodes. 
+    # Set true if you want to use mountpoint for s3 on cluster nodes.
     # If enabled, a systemctl mount-s3.service file will be writen that will mount at /mnt/<BucketName>.
-    # requires s3 permissions to be added to cluster execution role. 
+    # requires s3 permissions to be added to cluster execution role.
     enable_mount_s3 = False
 
-    s3_bucket = "" # required when enable_mount_s3 = True, replace with your actual data bucket name in quotes, ie. "my-dataset-bucket"
+    # Set true if you want to use FSx OpenZFS in addition to FSxL.
+    enable_fsx_openzfs = False
+
+    s3_bucket = ""  # required when enable_mount_s3 = True, replace with your actual data bucket name in quotes, ie. "my-dataset-bucket"
 
     if enable_mount_s3 and not s3_bucket:
-        raise ValueError("Error: A bucket name must be specified when enable_mount_s3 is True")
+        raise ValueError(
+            "Error: A bucket name must be specified when enable_mount_s3 is True"
+        )
 
 
 # Configuration parameters for ActiveDirectory/LDAP/SSSD
@@ -48,7 +52,9 @@ class SssdConfig:
     ldap_search_base = "dc=hyperpod,dc=abc123,dc=com"
 
     # The default bind DN to use for performing LDAP operations
-    ldap_default_bind_dn = "CN=ReadOnly,OU=Users,OU=hyperpod,DC=hyperpod,DC=abc123,DC=com"
+    ldap_default_bind_dn = (
+        "CN=ReadOnly,OU=Users,OU=hyperpod,DC=hyperpod,DC=abc123,DC=com"
+    )
 
     # "password" or "obfuscated_password". Obfuscated password is recommended.
     ldap_default_authtok_type = "obfuscated_password"
@@ -64,14 +70,14 @@ class SssdConfig:
 
     # Group names to accept SSH login
     ssh_allow_groups = {
-        "controller" : ["ClusterAdmin", "ubuntu"],
-        "compute" : ["ClusterAdmin", "ClusterDev", "ubuntu"],
-        "login" : ["ClusterAdmin", "ClusterDev", "ubuntu"],
+        "controller": ["ClusterAdmin", "ubuntu"],
+        "compute": ["ClusterAdmin", "ClusterDev", "ubuntu"],
+        "login": ["ClusterAdmin", "ClusterDev", "ubuntu"],
     }
 
     # Group names for sudoers
     sudoers_groups = {
-        "controller" : ["ClusterAdmin", "ClusterDev"],
-        "compute" : ["ClusterAdmin", "ClusterDev"],
-        "login" : ["ClusterAdmin", "ClusterDev"],
+        "controller": ["ClusterAdmin", "ClusterDev"],
+        "compute": ["ClusterAdmin", "ClusterDev"],
+        "login": ["ClusterAdmin", "ClusterDev"],
     }

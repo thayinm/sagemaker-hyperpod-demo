@@ -1,0 +1,11 @@
+{
+    "workload_manager": "slurm",
+    "controller_group": "my-controller-group",
+    "login_group": "my-login-group", // Optional
+    "worker_groups": [
+        {
+            "instance_group_name": "worker-group-1",
+            "partition_name": "partition-1"
+        }
+    ]
+}

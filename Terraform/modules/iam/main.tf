@@ -8,6 +8,14 @@ data "aws_iam_policy" "PrometheusWriteAccess" {
   name = "AmazonPrometheusRemoteWriteAccess"
 }
 
+data "aws_iam_policy" "PrometheusReadAccess" {
+  name = "AmazonPrometheusQueryAccess"
+}
+
+data "aws_iam_policy" "CloudWatchReadAccess" {
+  name = "AmazonGrafanaCloudWatchAccess"
+}
+
 data "aws_iam_policy" "AmazonSageMakerClusterInstanceRolePolicy" {
   name = "AmazonSageMakerClusterInstanceRolePolicy"
 }
@@ -31,6 +39,29 @@ resource "aws_iam_role" "sm_hyperpod_role" {
   })
 }
 
+resource "aws_iam_role" "grafana_ec2_role" {
+  name        = "grafana-ec2-role"
+  description = "EC2 Instance Profile Role for Grafana"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = "TerraformSMAssume"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "grafana_instance_profile" {
+  name = "grafana_web_access"
+  role = aws_iam_role.grafana_ec2_role.name
+}
+
 resource "aws_iam_role_policy_attachment" "prometheus_attach" {
   role       = aws_iam_role.sm_hyperpod_role.name
   policy_arn = data.aws_iam_policy.PrometheusWriteAccess.arn
@@ -44,6 +75,16 @@ resource "aws_iam_role_policy_attachment" "sagemaker_attach" {
 resource "aws_iam_role_policy_attachment" "sagemaker_cluster_attach" {
   role       = aws_iam_role.sm_hyperpod_role.name
   policy_arn = data.aws_iam_policy.AmazonSageMakerClusterInstanceRolePolicy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "grafana_cloudwatch_attach" {
+  role       = aws_iam_role.grafana_ec2_role.name
+  policy_arn = data.aws_iam_policy.CloudWatchReadAccess.arn
+}
+
+resource "aws_iam_role_policy_attachment" "grafana_prometheus_attach" {
+  role       = aws_iam_role.grafana_ec2_role.name
+  policy_arn = data.aws_iam_policy.PrometheusReadAccess.arn
 }
 
 resource "aws_iam_role_policy" "hyperpod_vpc_policy" {
