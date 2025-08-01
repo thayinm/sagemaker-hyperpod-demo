@@ -54,6 +54,6 @@ module "grafana" {
   source      = "./modules/ec2"
   subnet_id   = module.sagemaker_vpc.public_subnet_ids[0]
   vpc_id      = module.sagemaker_vpc.vpc_id
-  key_name    = null #"docker-sandbox"
+  key_name    = "docker-sandbox"
   iam_profile = module.sagemaker_role.grafana_instance_profile
 }
