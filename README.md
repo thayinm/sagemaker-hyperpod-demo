@@ -45,7 +45,7 @@ terraform init && terraform plan
 terraform apply -auto-approve
 ```
 
-Now you can go back to our root folder and create 2 files that are necessary for spinning up a cluster. The first being a [provisioning_parameters.json](https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-hyperpod-lifecycle-best-practices-slurm-base-config.html) file that is going to be used by each of our nodes when running the `on_create.sh` Lifecycle Script and the second being an `input-cli-json` file which you will use as input for the AWS CLI command to finally start cluster creation.
+Now you can go back to our root folder and create 2 files that are necessary for spinning up a cluster. The first being a [provisioning_parameters.json](https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-hyperpod-lifecycle-best-practices-slurm-base-config.html) file that is going to be used by each of our nodes when running the `on_create.sh` Lifecycle Script and the second being an `cluster_config.json` file which you will use as input for the AWS CLI command to finally start cluster creation. Be sure to enter `slurm` when prompted.
 
 ```shell
 cd ..
