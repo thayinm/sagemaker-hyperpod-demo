@@ -44,3 +44,7 @@ terraform.rc
 # Ignore cluster-config files
 cluster-config.json*
 provisioning_parameters.json
+pv.yaml
+pod.yaml
+pvc.yaml
+storageclass.yaml

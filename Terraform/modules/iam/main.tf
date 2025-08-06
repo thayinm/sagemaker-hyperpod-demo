@@ -96,6 +96,7 @@ resource "aws_iam_role_policy" "hyperpod_vpc_policy" {
       {
         Effect = "Allow",
         Action = [
+          "ec2:AssignPrivateIpAddresses",
           "ec2:CreateNetworkInterface",
           "ec2:CreateNetworkInterfacePermission",
           "ec2:DeleteNetworkInterface",
@@ -106,6 +107,13 @@ resource "aws_iam_role_policy" "hyperpod_vpc_policy" {
           "ec2:DescribeSubnets",
           "ec2:DescribeSecurityGroups",
           "ec2:DetachNetworkInterface",
+          "ec2:ModifyNetworkInterfaceAttribute",
+          "ec2:UnassignPrivateIpAddresses",
+          "ecr:BatchGetImage",
+          "ecr:GetAuthorizationToken",
+          "ecr:GetDownloadUrlForLayer",
+          "eks-auth:AssumeRoleForPodIdentity",
+          "cloudwatch:DescribeAlarms",
           "ssm:GetParameter"
         ],
         Resource = "*"

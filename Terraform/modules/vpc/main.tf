@@ -1,6 +1,6 @@
 # VPC Infrastructure
 resource "aws_vpc" "tf-sagemaker-vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
 
   tags = {
@@ -17,8 +17,10 @@ resource "aws_subnet" "public_subnets" {
   availability_zone = element(var.azs, count.index)
 
   tags = {
-    Name      = "terraform-public-subnet-${count.index + 1}",
-    CreatedBy = "Terraform"
+    Name                                         = "terraform-public-subnet-${count.index + 1}",
+    CreatedBy                                    = "Terraform",
+    "kubernetes.io/cluster/hyperpod-eks-cluster" = "shared"
+    "kubernetes.io/role/elb"                     = "1"
   }
 }
 
@@ -29,8 +31,10 @@ resource "aws_subnet" "private_subnets" {
   availability_zone = element(var.azs, count.index)
 
   tags = {
-    Name      = "terraform-private-subnet-${count.index + 1}",
-    CreatedBy = "Terraform"
+    Name                                         = "terraform-private-subnet-${count.index + 1}",
+    CreatedBy                                    = "Terraform"
+    "kubernetes.io/cluster/hyperpod-eks-cluster" = "shared"
+    "kubernetes.io/role/elb"                     = "1"
   }
 }
 

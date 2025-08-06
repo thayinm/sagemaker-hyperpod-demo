@@ -32,3 +32,20 @@ variable "hyperpod_fsx_dns_name" {
   type        = string
   description = "The FSx Lustre filesystem, DNS Name, that will be used by the HyperPod Cluster."
 }
+
+variable "eks_cluster_arn" {
+  type        = string
+  description = "The EKS Cluster ARN created by this TF Module"
+  default     = "DNE"
+}
+
+variable "eks_cluster_name" {
+  type        = string
+  description = "The EKS Cluster name created by this TF Module"
+  default     = "DNE"
+}
+
+variable "hyperpod_fsx_filesystem_id" {
+  type        = string
+  description = "Filesystem ID for FSx Lustre, used for EKS HyperPod Cluster"
+}
