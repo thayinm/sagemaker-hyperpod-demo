@@ -152,7 +152,7 @@ aws sagemaker create-cluster --cli-input-json file://cluster-config.json
 kubectl get nodes
 ```
 
-Setup FSx Luster Volume for use by HyperPod in EKS
+Setup FSx Lustre Volume for use by HyperPod in EKS
 
 ```bash
 kubectl apply -f storageclass.yaml
