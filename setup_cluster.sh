@@ -180,7 +180,7 @@ else
         "InstanceType": "ml.m5.2xlarge",
         "InstanceCount": 1,
         "LifeCycleConfig": {
-          "SourceS3Uri": "${TERRAFORMS3BUCKET}/slurm",
+          "SourceS3Uri": "${TERRAFORMS3BUCKET}slurm",
           "OnCreate": "on_create.sh"
         },
         "ExecutionRole": ${TERRAFORMIAMROLE},
@@ -191,7 +191,7 @@ else
         "InstanceType": "${INSTANCETYPE}",
         "InstanceCount": ${INSTANCECOUNT},
         "LifeCycleConfig": {
-          "SourceS3Uri": "${TERRAFORMS3BUCKET}",
+          "SourceS3Uri": "${TERRAFORMS3BUCKET}slurm",
           "OnCreate": "on_create.sh"
         },
         "ExecutionRole": ${TERRAFORMIAMROLE},
