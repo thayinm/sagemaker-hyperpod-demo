@@ -1,5 +1,15 @@
 # SageMaker HyperPod Demo
 
+<!--toc:start-->
+- [SageMaker HyperPod Demo](#sagemaker-hyperpod-demo)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Prerequisites for EKS Orchestration (Optional)](#prerequisites-for-eks-orchestration-optional)
+    - [Installation (Slurm)](#installation-slurm)
+    - [Installation (EKS)](#installation-eks)
+  - [Clean Up](#clean-up)
+<!--toc:end-->
+
 This repository is designed to serve as a guide on how to get started with running & maintaining your own SageMaker HyperPod Cluster. Terraform is used to quickly and easily setup all the infrastructure you may want/need for our HyperPod Cluster:
 
 - Our own VPC with a public & private subnet as well as a NAT gateway to route traffic from our private subnet through the IGW. See the SageMaker [documentation](https://docs.aws.amazon.com/sagemaker/latest/dg/infrastructure-connect-to-resources.html) for more details.
