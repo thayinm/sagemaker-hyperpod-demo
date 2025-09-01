@@ -103,7 +103,7 @@ module "eks" {
 }
 ```
 
-Once complete you can now run the following commands in the terminal to deploy all infrastructure to you AWS Account:
+Once complete you can now run the following commands in the terminal to deploy all infrastructure to your AWS Account:
 
 ```bash
 terraform init && terraform plan
